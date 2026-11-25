@@ -34,3 +34,19 @@ html {
 .swiper-button-prev {
   color: var(--color-pink) !important;
 }
+
+/* Hero carousel arrows */
+.hero-carousel .swiper-button-next,
+.hero-carousel .swiper-button-prev {
+  color: var(--color-pink) !important;
+  background: rgba(255, 255, 255, 0.8);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.hero-carousel .swiper-button-next::after,
+.hero-carousel .swiper-button-prev::after {
+  font-size: 16px;
+  font-weight: bold;
+}

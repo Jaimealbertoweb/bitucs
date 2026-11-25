@@ -12,9 +12,11 @@ import PriceSummary from "@/components/Configurator/PriceSummary";
 export default function ConfiguradorPage() {
   const [frame, setFrame] = useState<FrameType>("nogal");
   const [background, setBackground] = useState<BackgroundType>("rayas-rojas");
+  const [paspartou, setPaspartou] = useState<BackgroundType>("liso-beige");
   const [hookCount, setHookCount] = useState(2);
   const [hookFinish, setHookFinish] = useState<HookFinish>("laton");
   const [photos, setPhotos] = useState<string[]>([]);
+  const [photoCount, setPhotoCount] = useState(2);
   const [loading, setLoading] = useState(false);
 
   const handleCheckout = async () => {
@@ -23,7 +25,7 @@ export default function ConfiguradorPage() {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ frame, background, hookCount, hookFinish }),
+        body: JSON.stringify({ frame, background, paspartou, hookCount, hookFinish }),
       });
       const data = await res.json();
       if (data.url) {
@@ -47,23 +49,33 @@ export default function ConfiguradorPage() {
           <Preview
             frame={frame}
             background={background}
+            paspartou={paspartou}
             hookCount={hookCount}
             hookFinish={hookFinish}
             photos={photos}
+            photoCount={photoCount}
           />
         </div>
 
         {/* Options - right */}
         <div className="flex-1 space-y-6">
           <FrameSelector selected={frame} onChange={setFrame} />
-          <BackgroundSelector selected={background} onChange={setBackground} />
+          <BackgroundSelector
+            selected={background}
+            paspartouSelected={paspartou}
+            onChange={setBackground}
+            onPaspartouChange={setPaspartou}
+          />
           <HooksSelector
             count={hookCount}
-            finish={hookFinish}
             onCountChange={setHookCount}
-            onFinishChange={setHookFinish}
           />
-          <PhotoUploader photos={photos} maxPhotos={4} onChange={setPhotos} />
+          <PhotoUploader
+            photos={photos}
+            photoCount={photoCount}
+            onPhotoCountChange={setPhotoCount}
+            onChange={setPhotos}
+          />
           <PriceSummary
             frame={frame}
             background={background}

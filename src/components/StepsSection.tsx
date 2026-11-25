@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Paintbrush, ImageUp, PackageCheck } from "lucide-react";
 
 const steps = [
@@ -38,7 +39,9 @@ export default function StepsSection() {
             </div>
           ))}
         </div>
-      </div>
+        
+        </div>
+      
     </section>
   );
 }

@@ -5,28 +5,79 @@ import { FrameType, BackgroundType, HookFinish, frames, backgrounds, hookFinishe
 interface PreviewProps {
   frame: FrameType;
   background: BackgroundType;
+  paspartou: BackgroundType;
   hookCount: number;
   hookFinish: HookFinish;
   photos: string[];
+  photoCount: number;
 }
 
-export default function Preview({ frame, background, hookCount, hookFinish, photos }: PreviewProps) {
+function renderBgStyle(bgId: BackgroundType) {
+  const bgOption = backgrounds.find((b) => b.id === bgId)!;
+  if (bgId === "rayas-rojas") {
+    return {
+      background: `repeating-linear-gradient(90deg, ${bgOption.colors[0]} 0px, ${bgOption.colors[0]} 12px, ${bgOption.colors[1] || "#F5F0E8"} 12px, ${bgOption.colors[1] || "#F5F0E8"} 24px)`,
+    };
+  }
+  return { backgroundColor: bgOption.colors[0] };
+}
+
+export default function Preview({ frame, background, paspartou, hookCount, hookFinish, photos, photoCount }: PreviewProps) {
   const frameOption = frames.find((f) => f.id === frame)!;
-  const bgOption = backgrounds.find((b) => b.id === background)!;
   const hookOption = hookFinishes.find((h) => h.id === hookFinish)!;
 
-  const renderBackground = () => {
-    if (background === "rayas-rojas") {
+  const renderPhotos = () => {
+    if (photoCount === 2) {
       return (
-        <div
-          className="w-full h-full"
-          style={{
-            background: `repeating-linear-gradient(90deg, ${bgOption.colors[0]} 0px, ${bgOption.colors[0]} 12px, ${bgOption.colors[1] || "#F5F0E8"} 12px, ${bgOption.colors[1] || "#F5F0E8"} 24px)`,
-          }}
-        />
+        <div className="absolute inset-0 flex gap-2 p-2">
+          {[0, 1].map((i) => (
+            <div key={i} className="flex-1 relative overflow-hidden rounded-sm border-[3px]" style={renderBgStyle(background)}>
+              <div className="absolute inset-[6px] overflow-hidden rounded-sm">
+                {photos[i] ? (
+                  <img src={photos[i]} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-white/40">
+                    <span className="text-xs text-brown/40">Foto {i + 1}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       );
     }
-    return <div className="w-full h-full" style={{ backgroundColor: bgOption.colors[0] }} />;
+
+    // 3 photos: one big left, two stacked right
+    return (
+      <div className="absolute inset-0 flex gap-2 p-2">
+        <div className="flex-1 relative overflow-hidden rounded-sm border-[3px]" style={renderBgStyle(background)}>
+          <div className="absolute inset-[6px] overflow-hidden rounded-sm">
+            {photos[0] ? (
+              <img src={photos[0]} alt="Foto 1" className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-white/40">
+                <span className="text-xs text-brown/40">Foto 1</span>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="flex-1 flex flex-col gap-2">
+          {[1, 2].map((i) => (
+            <div key={i} className="flex-1 relative overflow-hidden rounded-sm border-[3px]" style={renderBgStyle(background)}>
+              <div className="absolute inset-[6px] overflow-hidden rounded-sm">
+                {photos[i] ? (
+                  <img src={photos[i]} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-white/40">
+                    <span className="text-xs text-brown/40">Foto {i + 1}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   };
 
   const hookPositions = () => {
@@ -47,28 +98,10 @@ export default function Preview({ frame, background, hookCount, hookFinish, phot
           className="w-64 h-64 md:w-72 md:h-72 rounded-sm relative overflow-hidden shadow-lg"
           style={{ border: `12px solid ${frameOption.color}` }}
         >
-          {/* Background pattern */}
-          {renderBackground()}
-
-          {/* Photo overlay */}
-          {photos.length > 0 && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <img
-                src={photos[0]}
-                alt="Tu foto"
-                className="max-w-full max-h-full object-cover"
-              />
-            </div>
-          )}
-
-          {/* Placeholder text if no photo */}
-          {photos.length === 0 && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-sm bg-white/80 px-3 py-1 rounded text-brown/60">
-                Tu foto
-              </span>
-            </div>
-          )}
+          {/* Background (controlled by Paspartú selector) */}
+          <div className="absolute inset-0" style={renderBgStyle(paspartou)} />
+          {/* Photos with paspartú borders (controlled by Fondo selector) */}
+          {renderPhotos()}
         </div>
 
         {/* Hooks */}

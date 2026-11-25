@@ -33,6 +33,8 @@ export interface Product {
   image: string;
   frame: FrameType;
   background: BackgroundType;
+  hookCount: number;
+  hookFinish: HookFinish;
 }
 
 export const frames: FrameOption[] = [
@@ -59,55 +61,67 @@ export const products: Product[] = [
     id: "nogal-rayas",
     name: "Marco Nogal Rayas",
     description: "Marco de nogal con fondo de rayas rojas. Clásico y elegante.",
-    price: 52,
+    price: 59,
     image: "/images/placeholder-product.svg",
     frame: "nogal",
     background: "rayas-rojas",
+    hookCount: 2,
+    hookFinish: "laton",
   },
   {
     id: "roble-beige",
     name: "Marco Roble Natural",
     description: "Marco de roble con fondo beige. Minimalista y natural.",
-    price: 62.5,
+    price: 69.5,
     image: "/images/placeholder-product.svg",
     frame: "roble",
     background: "liso-beige",
+    hookCount: 2,
+    hookFinish: "laton",
   },
   {
     id: "blanco-verde",
     name: "Marco Blanco Verde",
     description: "Marco blanco con fondo verde. Fresco y moderno.",
-    price: 51.5,
+    price: 58.5,
     image: "/images/placeholder-product.svg",
     frame: "blanco",
     background: "liso-verde",
+    hookCount: 3,
+    hookFinish: "negro-mate",
   },
   {
     id: "nogal-azul",
     name: "Marco Nogal Azul",
     description: "Marco de nogal con fondo azul. Sofisticado y único.",
-    price: 52,
+    price: 59,
     image: "/images/placeholder-product.svg",
     frame: "nogal",
     background: "liso-azul",
+    hookCount: 2,
+    hookFinish: "negro-mate",
   },
   {
     id: "roble-rayas",
     name: "Marco Roble Rayas",
     description: "Marco de roble con fondo de rayas rojas. Cálido y acogedor.",
-    price: 65.5,
+    price: 72.5,
     image: "/images/placeholder-product.svg",
     frame: "roble",
     background: "rayas-rojas",
+    hookCount: 3,
+    hookFinish: "laton",
   },
   {
     id: "blanco-beige",
     name: "Marco Blanco Natural",
     description: "Marco blanco con fondo beige. Luminoso y sencillo.",
-    price: 48.5,
+    price: 55.5,
     image: "/images/placeholder-product.svg",
     frame: "blanco",
     background: "liso-beige",
+    hookCount: 2,
+    hookFinish: "laton",
   },
 ];
 

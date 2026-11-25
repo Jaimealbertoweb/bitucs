@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
+import { createOrder } from "@/lib/db";
 import {
   FrameType,
   BackgroundType,
@@ -13,11 +14,13 @@ import {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { frame, background, hookCount, hookFinish } = body as {
+    const { frame, background, paspartou, hookCount, hookFinish, photoCount } = body as {
       frame: FrameType;
       background: BackgroundType;
+      paspartou?: BackgroundType;
       hookCount: number;
       hookFinish: HookFinish;
+      photoCount?: number;
     };
 
     const frameOption = frames.find((f) => f.id === frame);
@@ -47,14 +50,30 @@ export async function POST(request: NextRequest) {
         },
       ],
       mode: "payment",
+      customer_creation: "always",
       success_url: `${request.nextUrl.origin}/exito?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${request.nextUrl.origin}/configurador`,
       metadata: {
         frame,
         background,
+        paspartou: paspartou || "",
         hookCount: String(hookCount),
         hookFinish,
+        photoCount: String(photoCount || 2),
       },
+    });
+
+    // Save order to database (non-blocking)
+    await createOrder({
+      stripeSessionId: session.id,
+      customerEmail: "",
+      frame,
+      background,
+      paspartou: paspartou || null,
+      hookCount,
+      hookFinish,
+      photoCount: photoCount || 2,
+      totalPrice: total,
     });
 
     return NextResponse.json({ url: session.url });

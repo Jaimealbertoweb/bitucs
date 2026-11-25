@@ -1,0 +1,43 @@
+// use prisma-8
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  frame       String
+  background  String
+  hookCount   Int
+  hookFinish  String
+  price       Float
+  image       String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now()) @onCreate(now())
+  updatedAt   temporal.UpdatedAt
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  stripeSessionId String      @unique
+  status          String      @default("pending")
+  customerEmail   String
+  customerName    String?
+  frame           String
+  background      String
+  paspartou       String?
+  hookCount       Int
+  hookFinish      String
+  photoCount      Int         @default(2)
+  totalPrice      Float
+  photos          OrderPhoto[]
+  createdAt       DateTime    @default(now()) @onCreate(now())
+  updatedAt       temporal.UpdatedAt
+}
+
+model OrderPhoto {
+  id        Int    @id @default(autoincrement())
+  orderId   Int
+  order     Order  @relation(fields: [orderId], references: [id])
+  url       String
+  position  Int
+  createdAt DateTime @default(now()) @onCreate(now())
+}

@@ -29,7 +29,7 @@ export default function ContactoPage() {
             Hola, soy la creadora de BITUCS
           </h2>
           <p className="text-brown-light leading-relaxed mb-6">
-            Cada portallaves que sale de mi taller está hecho con cariño y
+            Cada uno de los portallaves que sale de mi taller está hecho con cariño y
             dedicación. Creo que las cosas bonitas hacen que volver a casa sea
             un poco más especial. Por eso nació BITUCS: para que tus llaves
             tengan un sitio bonito donde descansar y tus recuerdos favoritos
